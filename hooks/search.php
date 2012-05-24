@@ -1,7 +1,7 @@
 <?php
     function HookInline_keywordsSearchSearchbarbottomtoolbar()
     {
-        global $lang, $inline_keywords_usertype;
+        global  $baseurl,$lang, $inline_keywords_usertype;
         if(checkperm($inline_keywords_usertype))
             {
             ?>
@@ -11,7 +11,11 @@
                 <p><?php echo $lang['keywordstoresource']; ?></p>
                 
                 <form id="manipulateKeywords">
-                  <input id="newKeywordsForSelectedResources" class="SearchWidth"/>
+                  <input id="newKeywordsForSelectedResources" class="SearchWidth"/>                                        
+                  <div id="skmessages"></div>                        
+                  <div id="skproposals">    
+                      <img src="<?php echo $baseurl ?>/plugins/smartkeywording_rs/images/ui-anim_basic_16x16.gif" style="position:absolute;padding:0px;margin:5px;line-height:10px;top:0px;right:0px;display:none;" id="loadingDiv">                                                       
+                  </div>                                                                                
                   <input type="button" id="selectAllResourceButton" value="<?php echo $lang["selectall"]; ?>">
                   <input type="button" id="clearSelectedResourceButton" value="<?php echo $lang["unselectall"]; ?>">
                   <input type="button" id="submitSelectedResourceButton" value="<?php echo $lang["addkeywords"]; ?>">
@@ -26,8 +30,26 @@
         global $baseurl, $inline_keywords_usertype, $inline_keywords_background_colour;
     if(checkperm($inline_keywords_usertype))
         { ?>
-            <script type='text/javascript'>
+            <link type="text/css" href="<?php echo $baseurl?>/plugins/smartkeywording_rs/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/jquery-ui.min.js" type="text/javascript"></script>    
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/jquery.cookie.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/jquery.tools.min.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/bootstrap-alerts.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/bootstrap-buttons.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/bootstrap-twipsy.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/bootstrap-popover.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.ui.delayedExec.js" type="text/javascript"></script>        
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.ui.messages.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.smartkeywording.webgui.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.sk.rs.js" type="text/javascript"></script>
+            <script src="<?php echo $baseurl?>/plugins/inline_keywords/js/kreuzverweis.sk.inline.js" type="text/javascript"></script>
+            <script type='text/javascript'>                
                 jQuery(document).ready(function() {
+                    
+                    addSKAutocomplete("newKeywordsForSelectedResources");                    
+                    addSKProposalsOnReturn("newKeywordsForSelectedResources","skproposals");                    
+                    addSKSelection("skproposals");
+                    
                     jQuery('.ResourcePanelShell, .ResourcePanelShellSmall').on('click', function(event) {
                         if(!(event.originalEvent.srcElement instanceof HTMLImageElement )){
                             //console.log(event.originalEvent.srcElement instance of HTMLImageElement);
