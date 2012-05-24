@@ -93,11 +93,16 @@
                         resourceIds = jQuery.map(jQuery('.chosen'), function(a, b){
                             return jQuery(a).attr('id').replace('ResourceShell','');
                         }).join('+');
+                        var selectedKeywords=getSelectedKeywords("skproposals");
                         jQuery.ajax({
                             type: "POST",
                             url: "<?php echo $baseurl; ?>/plugins/inline_keywords/pages/add_keywords.php",
-                            data: { refs: resourceIds, keywords: jQuery('#newKeywordsForSelectedResources').val().replace(/ /g,'+') }
+                            data: { refs: resourceIds, keywords:  selectedKeywords}
                         }).done(function( msg ) {
+                            getProposals(0, selectedKeywords, function() {
+                                jQuery("#skproposals").empty();
+                                addProposals(this);
+                            })
                             if(msg !== ''){alert( "Data Saved: " + msg );}
                             //jQuery(".keywordPanel").effect("highlight", {}, 3000);
                             jQuery(".keywordPanel").fadeTo("slow", 0.5, function () {

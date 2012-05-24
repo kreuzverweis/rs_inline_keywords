@@ -61,4 +61,5 @@ function getSelectedKeywords(proposalContainerId) {
 		else
 			selectedKeywords = value.textContent;
 	});
+	return selectedKeywords;
 }
