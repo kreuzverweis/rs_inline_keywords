@@ -19,7 +19,7 @@
                   </span>
                   <div id="skmessages"></div>                        
                   <div id="skproposals">    
-                      <img src="<?php echo $baseurl ?>/plugins/smartkeywording_rs/images/ui-anim_basic_16x16.gif" style="position:absolute;padding:0px;margin:5px;line-height:10px;top:0px;right:0px;display:none;" id="loadingDiv">                                                       
+                      <img src="<?php echo $baseurl ?>/plugins/smartkeywording_rs/images/ui-anim_basic_16x16.gif" style="width:16px;height:16px;padding:0px;top:0px;right:0px;" id="loadingAnimation">                                                       
                   </div>                                                                                
                   <input type="button" id="selectAllResourceButton" value="<?php echo $lang["selectall"]; ?>">
                   <input type="button" id="clearSelectedResourceButton" value="<?php echo $lang["unselectall"]; ?>">
@@ -92,15 +92,17 @@
                     jQuery('#submitSelectedResourceButton').on('click', function() {
                         resourceIds = jQuery.map(jQuery('.chosen'), function(a, b){
                             return jQuery(a).attr('id').replace('ResourceShell','');
-                        }).join('+');
+                        }).join('+');                        
+                        jQuery("#loadingAnimation").show();
                         var selectedKeywords=getSelectedKeywords("skproposals");
+                        jQuery("#skproposals > span").remove();
                         jQuery.ajax({
                             type: "POST",
                             url: "<?php echo $baseurl; ?>/plugins/inline_keywords/pages/add_keywords.php",
                             data: { refs: resourceIds, keywords:  selectedKeywords}
                         }).done(function( msg ) {
-                            getProposals(0, selectedKeywords, function() {
-                                jQuery("#skproposals").empty();
+                            getProposals(0, selectedKeywords, function() {                                
+                                jQuery("#loadingAnimation").hide();
                                 addProposals(this);
                             })
                             if(msg !== ''){alert( "Data Saved: " + msg );}
@@ -110,6 +112,7 @@
                             });
                         });
                     });
+                    jQuery("#loadingAnimation").hide();
                 });
             </script>
         <?php }

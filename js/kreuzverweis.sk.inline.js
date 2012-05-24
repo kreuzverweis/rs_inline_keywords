@@ -36,8 +36,9 @@ function addSKProposalsOnReturn(fieldId, proposalContainerId) {
 				addedKeyword.text(jQuery(this).val());
 				jQuery("#skproposals").append(addedKeyword);
 				jQuery(this).val("");
-
+				jQuery("#loadingAnimation").show();
 				getProposals(0, getSelectedKeywords(proposalContainerId), function() {
+					jQuery("#loadingAnimation").hide();
 					addProposals(this);
 				})
 				return false;
