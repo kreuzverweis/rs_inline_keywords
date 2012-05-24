@@ -1,6 +1,8 @@
 .ResourcePanel {margin:5px;}
 .ResourcePanelSmall {margin:5px;}
 .chosen .ResourcePanel, .chosen .ResourcePanelSmall{border:5px solid hotPink; margin:1px 0;}
+form#manipulateKeywords p { position:relative }
+form#manipulateKeywords label  { position:absolute; top:4px; left:4px; color:#ccc; cursor:text;}
 
 .skKeyword {display:inline-block;background:white;color:orange;margin:2px;padding:1px;border-style:solid;border-color:white;border-width:1px;-moz-border-radius:4px;border-radius:4px;cursor:pointer;}
 

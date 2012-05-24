@@ -7,18 +7,23 @@
             ?>
             <div id="SearchBoxPanel" class="keywordPanel">
               <div class="SearchSpace">
-                <h2><?php echo $lang["addkeywords"]; ?></h2>
+                <h2><?php echo $lang["editfields"]; ?></h2>
                 <p><?php echo $lang['keywordstoresource']; ?></p>
                 
-                <form id="manipulateKeywords">
-                  <input id="newKeywordsForSelectedResources" class="SearchWidth"/>                                        
+                <form id="manipulateKeywords">                                    
+                  <span class="wrap">
+                    <p>
+                        <label for='newKeywordsForSelectedResources'>Keywords</label>
+                        <input id='newKeywordsForSelectedResources' class='SearchWidth'/>
+                    </p>
+                  </span>
                   <div id="skmessages"></div>                        
                   <div id="skproposals">    
                       <img src="<?php echo $baseurl ?>/plugins/smartkeywording_rs/images/ui-anim_basic_16x16.gif" style="position:absolute;padding:0px;margin:5px;line-height:10px;top:0px;right:0px;display:none;" id="loadingDiv">                                                       
                   </div>                                                                                
                   <input type="button" id="selectAllResourceButton" value="<?php echo $lang["selectall"]; ?>">
                   <input type="button" id="clearSelectedResourceButton" value="<?php echo $lang["unselectall"]; ?>">
-                  <input type="button" id="submitSelectedResourceButton" value="<?php echo $lang["addkeywords"]; ?>">
+                  <input type="button" id="submitSelectedResourceButton" value="<?php echo $lang["submitchanges"]; ?>">
                 </form>
               </div>
             </div>
@@ -30,6 +35,7 @@
         global $baseurl, $inline_keywords_usertype, $inline_keywords_background_colour;
     if(checkperm($inline_keywords_usertype))
         { ?>
+
             <link type="text/css" href="<?php echo $baseurl?>/plugins/smartkeywording_rs/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
             <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/jquery-ui.min.js" type="text/javascript"></script>    
             <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/jquery.cookie.js" type="text/javascript"></script>
@@ -43,12 +49,23 @@
             <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.smartkeywording.webgui.js" type="text/javascript"></script>
             <script src="<?php echo $baseurl?>/plugins/smartkeywording_rs/js/kreuzverweis.sk.rs.js" type="text/javascript"></script>
             <script src="<?php echo $baseurl?>/plugins/inline_keywords/js/kreuzverweis.sk.inline.js" type="text/javascript"></script>
-            <script type='text/javascript'>                
+            <script src="../plugins/inline_keywords/js/jquery.infieldlabel.min.js" type="text/javascript" charset="utf-8"></script>
+            <script type='text/javascript'>
                 jQuery(document).ready(function() {
                     
                     addSKAutocomplete("newKeywordsForSelectedResources");                    
                     addSKProposalsOnReturn("newKeywordsForSelectedResources","skproposals");                    
                     addSKSelection("skproposals");
+                    
+                    jQuery('form#manipulateKeywords :text').focus(function(event){
+                        jQuery(this).siblings('label').fadeOut('fast');
+                    });
+
+                    jQuery('form#manipulateKeywords :text').blur(function(event){
+                        if(jQuery(this).val() === ""){
+                            jQuery(this).siblings('label').fadeIn('fast');                            
+                        }
+                    });
                     
                     jQuery('.ResourcePanelShell, .ResourcePanelShellSmall').on('click', function(event) {
                         if(!(event.originalEvent.srcElement instanceof HTMLImageElement )){
